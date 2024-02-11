@@ -35,7 +35,7 @@ jobs:
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
-        arguments: :${{ inputs.loader }}:publishMod -Prelease_type=${{ inputs.release_type }}
+        arguments: :${{ inputs.loader }} -Prelease_type=${{ inputs.release_type }}
     - name: Find JAR artifacts
       run: |
         find . -name "*.jar" -type f
