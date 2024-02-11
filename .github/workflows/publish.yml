@@ -44,4 +44,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: adyeshach Artifact
-          path: /fabric/build/libs/*.jar
+          path: fabric/build/libs/*.jar
