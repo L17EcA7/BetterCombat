@@ -1,21 +1,15 @@
+# This is a basic workflow to help you get started with Actions
+
 name: 'Build'
 on:
-  workflow_dispatch:
-    inputs:
-      loader:
-        type: choice
-        description: Mod loader
-        options: 
-        - fabric
-        - forge
-      release_type:
-        type: choice
-        description: Release type
-        options: 
-        - alpha
-        - beta
-        - release
+  schedule:
+    - cron: "0 0 * * *" 
   
+  # allows to manually run the job at any time
+  workflow_dispatch:
+
+  
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   releaseJar:
     runs-on: ubuntu-latest
@@ -24,7 +18,7 @@ jobs:
         uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
-          java-version: 17
+          java-version: 8
 
       - name: Cache .gradle/caches
         uses: actions/cache@v1
@@ -40,19 +34,14 @@ jobs:
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle-wrapper-
 
-      - name: Grant execute permission to gradlew
+      - name: 授予 gradlew 的执行权限
         run: chmod +x gradlew
 
-      - name: Build with Gradle
+      - name: 使用 Gradle 构建
         run: ./gradlew clean build
         continue-on-error: true
-
-      - name: Find JAR artifacts
-        run: |
-          find . -name "*.jar" -type f
-      - name: Upload JAR artifacts
+      - name: 上传工件
         uses: actions/upload-artifact@v2
         with:
           name: adyeshach Artifact
-          path: |
-            $(find . -name "*.jar" -type f)
+          path: /fabric/build/libs/*.jar
